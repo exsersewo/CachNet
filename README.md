@@ -11,7 +11,7 @@ Console.WriteLine(response.Data); //Pong!
 ResponseData<Incident> incident = await Cachet.AddIncidentAsync(new PostIncident
 {
   ComponentId = 1,
-  ComponentStatus = ComponsentStatus.Operational,
+  ComponentStatus = ComponentStatus.Operational,
   Name = "Incident Name"
 });
 ```
