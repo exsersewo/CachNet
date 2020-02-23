@@ -12,7 +12,7 @@ namespace CachNet.Entities
         public string Description;
         [JsonProperty("default_value"), JsonRequired]
         public double DefaultValue;
-        [JsonProperty("display_chart"), JsonRequired]
+        [JsonProperty("display_chart")]
         public int DisplayChart;
     }
 }
