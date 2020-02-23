@@ -1,7 +1,6 @@
 ﻿using CachNet.Entities;
 using RestEase;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CachNet.Net
@@ -9,7 +8,7 @@ namespace CachNet.Net
     public interface ICachetClient : IDisposable
     {
         [Get("/ping")]
-        public Task<ResponseData<string>> PingAsync();
+        public Task<ResponseSingle<string>> PingAsync();
 
         [Get("/version")]
         public Task<ResponseVersion> GetVersionAsync();
@@ -17,16 +16,16 @@ namespace CachNet.Net
         #region Components
 
         [Get("/components")]
-        public Task<ResponseData<IReadOnlyList<Component>>> GetAllComponentsAsync();
+        public Task<ResponseComponent> GetAllComponentsAsync();
 
         [Get("/components/{componentId}")]
-        public Task<ResponseData<Component>> GetComponentAsync([Path] int componentId);
+        public Task<ResponseComponent> GetComponentAsync([Path] int componentId);
 
         [Post("/components")]
-        public Task<ResponseData<Component>> AddComponentAsync([Body] PostComponent component);
+        public Task<ResponseComponent> AddComponentAsync([Body] PostComponent component);
 
         [Put("/components/{componentId}")]
-        public Task<ResponseData<Component>> UpdateComponentAsync([Path] int componentId, [Body] PutComponent component);
+        public Task<ResponseComponent> UpdateComponentAsync([Path] int componentId, [Body] PutComponent component);
 
         [Delete("/components/{componentId}")]
         public Task DeleteComponentAsync([Path] int componentId);
@@ -36,16 +35,16 @@ namespace CachNet.Net
         #region Component Groups
 
         [Get("/components/groups")]
-        public Task<ResponseData<IReadOnlyList<ComponentGroup>>> GetAllComponentGroupsAsync();
+        public Task<ResponseComponentGroup> GetAllComponentGroupsAsync();
 
         [Get("/components/groups/{groupId}")]
-        public Task<ResponseData<ComponentGroup>> GetComponentGroupAsync([Path] int groupId);
+        public Task<ResponseComponentGroup> GetComponentGroupAsync([Path] int groupId);
 
         [Post("/components/groups")]
-        public Task<ResponseData<ComponentGroup>> AddComponentGroupAsync([Body] PostComponentGroup group);
+        public Task<ResponseComponentGroup> AddComponentGroupAsync([Body] PostComponentGroup group);
 
         [Put("/components/groups/{groupId}")]
-        public Task<ResponseData<ComponentGroup>> UpdateComponentGroupAsync([Path] int groupId, [Body] PostComponentGroup group);
+        public Task<ResponseComponentGroup> UpdateComponentGroupAsync([Path] int groupId, [Body] PostComponentGroup group);
 
         [Delete("/components/groups/{groupId}")]
         public Task DeleteComponentGroupAsync([Path] int groupId);
@@ -55,16 +54,16 @@ namespace CachNet.Net
         #region Incidents
 
         [Get("/incidents")]
-        public Task<ResponseData<IReadOnlyList<Incident>>> GetAllIncidentsAsync();
+        public Task<ResponseIncident> GetAllIncidentsAsync();
 
         [Get("/incidents/{incidentId}")]
-        public Task<ResponseData<Incident>> GetIncidentAsync([Path] int incidentId);
+        public Task<ResponseIncident> GetIncidentAsync([Path] int incidentId);
 
         [Post("/incidents")]
-        public Task<ResponseData<Incident>> AddIncidentAsync([Body] PostIncident incidient);
+        public Task<ResponseIncident> AddIncidentAsync([Body] PostIncident incidient);
 
         [Put("/incidents/{incidentId}")]
-        public Task<ResponseData<Incident>> UpdateIncidentAsync([Path] int incidentId, [Body] PutIncident incident);
+        public Task<ResponseIncident> UpdateIncidentAsync([Path] int incidentId, [Body] PutIncident incident);
 
         [Delete("/incidents/{incidentId}")]
         public Task DeleteIncidentAsync([Path] int incidentId);
@@ -74,16 +73,16 @@ namespace CachNet.Net
         #region Incident Updates
 
         [Get("/incidents/{incidentId}/updates")]
-        public Task<ResponseData<IReadOnlyList<IncidentUpdate>>> GetAllUpdatesForIncidentAsync([Path] int incidentId);
+        public Task<ResponseIncidentUpdate> GetAllUpdatesForIncidentAsync([Path] int incidentId);
 
         [Get("/incidents/{incidentId}/updates/{updateId}")]
-        public Task<ResponseData<IncidentUpdate>> GetIncidentUpdateAsync([Path] int incidentId, [Path] int updateId);
+        public Task<ResponseIncidentUpdate> GetIncidentUpdateAsync([Path] int incidentId, [Path] int updateId);
 
         [Post("/incidents/{incidentId}/updates")]
-        public Task<ResponseData<IncidentUpdate>> AddIncidentUpdateAsync([Path] int incidentId, [Body] PostIncidentUpdate update);
+        public Task<ResponseIncidentUpdate> AddIncidentUpdateAsync([Path] int incidentId, [Body] PostIncidentUpdate update);
 
         [Put("/incidents/{incidentId}/updates/{updateId}")]
-        public Task<ResponseData<IncidentUpdate>> UpdateIncidentUpdateAsync([Path] int incidentId, [Path] int updateId, [Query] IncidentStatus status, [Query] string message);
+        public Task<ResponseIncidentUpdate> UpdateIncidentUpdateAsync([Path] int incidentId, [Path] int updateId, [Query] IncidentStatus status, [Query] string message);
 
         [Delete("/incidents/{incidentId}/updates/{updateId}")]
         public Task DeleteIncidentUpdateAsync([Path] int incidentId, [Path] int updateId);
@@ -93,22 +92,22 @@ namespace CachNet.Net
         #region Metrics
 
         [Get("/metrics")]
-        public Task<ResponseData<IReadOnlyList<Metric>>> GetAllMetricsAsync();
+        public Task<ResponseMetric> GetAllMetricsAsync();
 
         [Post("/metrics")]
-        public Task<ResponseData<Metric>> AddMetricAsync([Body] PostMetric metric);
+        public Task<ResponseMetric> AddMetricAsync([Body] PostMetric metric);
 
         [Get("/metrics/{metricId}")]
-        public Task<ResponseData<Metric>> GetMetricAsync([Path] int metricId);
+        public Task<ResponseMetric> GetMetricAsync([Path] int metricId);
 
         [Delete("/metrics/{metricId}")]
         public Task DeleteMetricAsync([Path] int metricId);
 
         [Get("/metrics/{metricId}/points")]
-        public Task<ResponseData<IReadOnlyList<MetricPoint>>> GetMetricPointsAsync([Path] int metricId);
+        public Task<ResponseMetricPoint> GetMetricPointsAsync([Path] int metricId);
 
         [Post("/metrics/{metricId}/points")]
-        public Task<ResponseData<IReadOnlyList<MetricPoint>>> AddMetricPointAsync([Path] int metricId, [Body] PostMetricPoint metricPoint);
+        public Task<ResponseMetricPoint> AddMetricPointAsync([Path] int metricId, [Body] PostMetricPoint metricPoint);
 
         [Delete("/metrics/{metricId}/points/{pointId}")]
         public Task DeleteMetricPointAsync([Path] int metricId, [Path] int pointId);
@@ -118,10 +117,10 @@ namespace CachNet.Net
         #region Subscribers
 
         [Get("/subscribers")]
-        public Task<ResponseData<IReadOnlyList<Subscriber>>> GetAllSubscribersAsync();
+        public Task<ResponseSubscriber> GetAllSubscribersAsync();
 
         [Post("/subscribers")]
-        public Task<ResponseData<Subscriber>> AddSubscriberAsync([Body] PostSubscriber subscriber);
+        public Task<ResponseSubscriber> AddSubscriberAsync([Body] PostSubscriber subscriber);
 
         [Delete("/subscribers/{subscriberId}")]
         public Task DeleteSubscriberAsync([Path] int subscriberId);

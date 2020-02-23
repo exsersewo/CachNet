@@ -1,8 +1,8 @@
 ﻿using CachNet.Entities;
 using CachNet.Net;
+using Newtonsoft.Json;
 using RestEase;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -35,44 +35,53 @@ namespace CachNet
                 httpClient.DefaultRequestHeaders.Add("X-Cachet-Token", ApiToken);
             }
 
-            _api = RestClient.For<ICachetClient>(httpClient);
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            _api = new RestClient(httpClient)
+            {
+                JsonSerializerSettings = settings
+            }.For<ICachetClient>();
         }
 
         public string BaseUrl { get; private set; }
 
         public void Dispose() => _api.Dispose();
 
-        public Task<ResponseData<Component>> AddComponentAsync(PostComponent component)
+        public Task<ResponseComponent> AddComponentAsync(PostComponent component)
         {
             return _api.AddComponentAsync(component);
         }
 
-        public Task<ResponseData<ComponentGroup>> AddComponentGroupAsync(PostComponentGroup group)
+        public Task<ResponseComponentGroup> AddComponentGroupAsync(PostComponentGroup group)
         {
             return _api.AddComponentGroupAsync(group);
         }
 
-        public Task<ResponseData<IncidentUpdate>> AddIncidentUpdateAsync(int incidentId, PostIncidentUpdate update)
+        public Task<ResponseIncidentUpdate> AddIncidentUpdateAsync(int incidentId, PostIncidentUpdate update)
         {
             return _api.AddIncidentUpdateAsync(incidentId, update);
         }
 
-        public Task<ResponseData<Incident>> AddIncidentAsync(PostIncident incidient)
+        public Task<ResponseIncident> AddIncidentAsync(PostIncident incidient)
         {
             return _api.AddIncidentAsync(incidient);
         }
 
-        public Task<ResponseData<Metric>> AddMetricAsync(PostMetric metric)
+        public Task<ResponseMetric> AddMetricAsync(PostMetric metric)
         {
             return _api.AddMetricAsync(metric);
         }
 
-        public Task<ResponseData<IReadOnlyList<MetricPoint>>> AddMetricPointAsync(int metricId, PostMetricPoint metricPoint)
+        public Task<ResponseMetricPoint> AddMetricPointAsync(int metricId, PostMetricPoint metricPoint)
         {
             return _api.AddMetricPointAsync(metricId, metricPoint);
         }
 
-        public Task<ResponseData<Subscriber>> AddSubscriberAsync(PostSubscriber subscriber)
+        public Task<ResponseSubscriber> AddSubscriberAsync(PostSubscriber subscriber)
         {
             return _api.AddSubscriberAsync(subscriber);
         }
@@ -112,87 +121,87 @@ namespace CachNet
             return _api.DeleteSubscriberAsync(subscriberId);
         }
 
-        public Task<ResponseData<IReadOnlyList<ComponentGroup>>> GetAllComponentGroupsAsync()
+        public Task<ResponseComponentGroup> GetAllComponentGroupsAsync()
         {
             return _api.GetAllComponentGroupsAsync();
         }
 
-        public Task<ResponseData<IReadOnlyList<Component>>> GetAllComponentsAsync()
+        public Task<ResponseComponent> GetAllComponentsAsync()
         {
             return _api.GetAllComponentsAsync();
         }
 
-        public Task<ResponseData<IReadOnlyList<Incident>>> GetAllIncidentsAsync()
+        public Task<ResponseIncident> GetAllIncidentsAsync()
         {
             return _api.GetAllIncidentsAsync();
         }
 
-        public Task<ResponseData<IReadOnlyList<Metric>>> GetAllMetricsAsync()
+        public Task<ResponseMetric> GetAllMetricsAsync()
         {
             return _api.GetAllMetricsAsync();
         }
 
-        public Task<ResponseData<IReadOnlyList<Subscriber>>> GetAllSubscribersAsync()
+        public Task<ResponseSubscriber> GetAllSubscribersAsync()
         {
             return _api.GetAllSubscribersAsync();
         }
 
-        public Task<ResponseData<IReadOnlyList<IncidentUpdate>>> GetAllUpdatesForIncidentAsync(int incidentId)
+        public Task<ResponseIncidentUpdate> GetAllUpdatesForIncidentAsync(int incidentId)
         {
             return _api.GetAllUpdatesForIncidentAsync(incidentId);
         }
 
-        public Task<ResponseData<Component>> GetComponentAsync(int componentId)
+        public Task<ResponseComponent> GetComponentAsync(int componentId)
         {
             return _api.GetComponentAsync(componentId);
         }
 
-        public Task<ResponseData<ComponentGroup>> GetComponentGroupAsync(int groupId)
+        public Task<ResponseComponentGroup> GetComponentGroupAsync(int groupId)
         {
             return _api.GetComponentGroupAsync(groupId);
         }
 
-        public Task<ResponseData<Incident>> GetIncidentAsync(int incidentId)
+        public Task<ResponseIncident> GetIncidentAsync(int incidentId)
         {
             return _api.GetIncidentAsync(incidentId);
         }
 
-        public Task<ResponseData<IncidentUpdate>> GetIncidentUpdateAsync(int incidentId, int updateId)
+        public Task<ResponseIncidentUpdate> GetIncidentUpdateAsync(int incidentId, int updateId)
         {
             return _api.GetIncidentUpdateAsync(incidentId, updateId);
         }
 
-        public Task<ResponseData<Metric>> GetMetricAsync(int metricId)
+        public Task<ResponseMetric> GetMetricAsync(int metricId)
         {
             return _api.GetMetricAsync(metricId);
         }
 
-        public Task<ResponseData<IReadOnlyList<MetricPoint>>> GetMetricPointsAsync(int metricId)
+        public Task<ResponseMetricPoint> GetMetricPointsAsync(int metricId)
         {
             return _api.GetMetricPointsAsync(metricId);
         }
 
-        public Task<ResponseData<string>> PingAsync()
+        public Task<ResponseSingle<string>> PingAsync()
         {
             return _api.PingAsync();
         }
 
-        public Task<ResponseData<Component>> UpdateComponentAsync(int componentId, PutComponent component)
+        public Task<ResponseComponent> UpdateComponentAsync(int componentId, PutComponent component)
         {
             return _api.UpdateComponentAsync(componentId, component);
         }
 
-        public Task<ResponseData<ComponentGroup>> UpdateComponentGroupAsync(int groupId, PostComponentGroup group)
+        public Task<ResponseComponentGroup> UpdateComponentGroupAsync(int groupId, PostComponentGroup group)
         {
             return _api.UpdateComponentGroupAsync(groupId, group);
         }
 
-        public Task<ResponseData<Incident>> UpdateIncidentAsync(int incidentId, PutIncident incident)
+        public Task<ResponseIncident> UpdateIncidentAsync(int incidentId, PutIncident incident)
         {
             return _api.UpdateIncidentAsync(incidentId, incident);
         }
 
-        public Task<ResponseData<IncidentUpdate>> UpdateIncidentUpdateAsync(int incidentId, int updateId, IncidentStatus status, string message)
+        public Task<ResponseIncidentUpdate> UpdateIncidentUpdateAsync(int incidentId, int updateId, IncidentStatus status, string message)
         {
             return _api.UpdateIncidentUpdateAsync(incidentId, updateId, status, message);
         }

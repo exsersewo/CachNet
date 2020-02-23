@@ -16,7 +16,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.PingAsync())
-                .Returns(Task.FromResult(new ResponseData<string>
+                .Returns(Task.FromResult(new ResponseSingle<string>
                 {
                     Data = "Pong!"
                 }));
@@ -118,7 +118,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.GetAllComponentsAsync())
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<Component>>
+                .Returns(Task.FromResult(new ResponseComponent
                 {
                     Meta = new ResponseMeta
                     {
@@ -160,70 +160,79 @@ namespace CachNet.Tests
                 }));
 
             mock.Setup(x => x.GetComponentAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<Component>
+                .Returns(Task.FromResult(new ResponseComponent
                 {
-                    Data = new Component
+                    Data = new List<Component>
                     {
-                        Id = 1,
-                        Name = "API",
-                        Description = "This is the Cachet API.",
-                        Link = "",
-                        Status = ComponentStatus.Operational,
-                        Order = 0,
-                        GroupId = 0,
-                        CreatedAt = DateTime.ParseExact("2015-07-24 14:42:10", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-07-24 14:42:10", timeParser, null),
-                        DeletedAt = null,
-                        StatusName = "Operational",
-                        Tags = new Dictionary<string, string>
+                        new Component
                         {
-                            { "slug-of-tag", "Tag Name" }
+                            Id = 1,
+                            Name = "API",
+                            Description = "This is the Cachet API.",
+                            Link = "",
+                            Status = ComponentStatus.Operational,
+                            Order = 0,
+                            GroupId = 0,
+                            CreatedAt = DateTime.ParseExact("2015-07-24 14:42:10", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-07-24 14:42:10", timeParser, null),
+                            DeletedAt = null,
+                            StatusName = "Operational",
+                            Tags = new Dictionary<string, string>
+                            {
+                                { "slug-of-tag", "Tag Name" }
+                            }
                         }
                     }
                 }));
 
             mock.Setup(x => x.AddComponentAsync(It.IsAny<PostComponent>()))
-                .Returns(Task.FromResult(new ResponseData<Component>
+                .Returns(Task.FromResult(new ResponseComponent
                 {
-                    Data = new Component
+                    Data = new List<Component>
                     {
-                        Id = 1,
-                        Name = "Component Name",
-                        Description = "Description",
-                        Link = "",
-                        Status = ComponentStatus.Operational,
-                        Order = 0,
-                        GroupId = 0,
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DeletedAt = null,
-                        StatusName = "Operational",
-                        Tags = new Dictionary<string, string>
+                        new Component
                         {
-                            { "slug-of-tag", "Tag Name" }
+                            Id = 1,
+                            Name = "Component Name",
+                            Description = "Description",
+                            Link = "",
+                            Status = ComponentStatus.Operational,
+                            Order = 0,
+                            GroupId = 0,
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DeletedAt = null,
+                            StatusName = "Operational",
+                            Tags = new Dictionary<string, string>
+                            {
+                                { "slug-of-tag", "Tag Name" }
+                            }
                         }
                     }
                 }));
 
             mock.Setup(x => x.UpdateComponentAsync(It.IsAny<int>(), It.IsAny<PutComponent>()))
-                .Returns(Task.FromResult(new ResponseData<Component>
+                .Returns(Task.FromResult(new ResponseComponent
                 {
-                    Data = new Component
+                    Data = new List<Component>
                     {
-                        Id = 1,
-                        Name = "Component Name",
-                        Description = "Description",
-                        Link = "",
-                        Status = ComponentStatus.Operational,
-                        Order = 0,
-                        GroupId = 0,
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DeletedAt = null,
-                        StatusName = "Operational",
-                        Tags = new Dictionary<string, string>
+                        new Component
                         {
-                            { "slug-of-tag", "Tag Name" }
+                            Id = 1,
+                            Name = "Component Name",
+                            Description = "Description",
+                            Link = "",
+                            Status = ComponentStatus.Operational,
+                            Order = 0,
+                            GroupId = 0,
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DeletedAt = null,
+                            StatusName = "Operational",
+                            Tags = new Dictionary<string, string>
+                            {
+                                { "slug-of-tag", "Tag Name" }
+                            }
                         }
                     }
                 }));
@@ -245,9 +254,9 @@ namespace CachNet.Tests
             var client = new CachetClient("https://demo.cachethq.io");
 
             Assert.Equal(allComponents[0].Name, all.Data[0].Name);
-            Assert.Equal(firstComponent.Name, first.Data.Name);
-            Assert.Equal(updatedComponent.Name, add.Data.Name);
-            Assert.Equal(updatedComponent.Name, put.Data.Name);
+            Assert.Equal(firstComponent.Name, first.Data[0].Name);
+            Assert.Equal(updatedComponent.Name, add.Data[0].Name);
+            Assert.Equal(updatedComponent.Name, put.Data[0].Name);
         }
 
         [Fact]
@@ -288,7 +297,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.GetAllComponentGroupsAsync())
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<ComponentGroup>>
+                .Returns(Task.FromResult(new ResponseComponentGroup
                 {
                     Meta = new ResponseMeta
                     {
@@ -307,58 +316,115 @@ namespace CachNet.Tests
                         }
                     },
                     Data = new List<ComponentGroup>
-                {
-                    new ComponentGroup
                     {
-                        Id = 1,
-                        Name = "Websites",
-                        Order = 0,
-                        Collapsed = Collapsable.No,
-                        CreatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
+                        new ComponentGroup
+                        {
+                            Id = 1,
+                            Name = "Websites",
+                            Order = 0,
+                            Collapsed = Collapsable.No,
+                            CreatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
+                        }
                     }
-                }
                 }));
 
             mock.Setup(x => x.GetComponentGroupAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<ComponentGroup>
+                .Returns(Task.FromResult(new ResponseComponentGroup
                 {
-                    Data = new ComponentGroup
+                    Meta = new ResponseMeta
                     {
-                        Id = 1,
-                        Name = "Websites",
-                        Order = 0,
-                        Collapsed = Collapsable.No,
-                        CreatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
+                        Pagination = new ResponsePagination
+                        {
+                            Total = 1,
+                            Count = 1,
+                            PerPage = 20,
+                            CurrentPage = 1,
+                            TotalPages = 1,
+                            Links = new ResponsePaginationLinks
+                            {
+                                PreviousPage = null,
+                                NextPage = null
+                            }
+                        }
+                    },
+                    Data = new List<ComponentGroup>
+                    {
+                        new ComponentGroup
+                        {
+                            Id = 1,
+                            Name = "Websites",
+                            Order = 0,
+                            Collapsed = Collapsable.No,
+                            CreatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-11-07 13:30:04", timeParser, null),
+                        }
                     }
                 }));
 
             mock.Setup(x => x.AddComponentGroupAsync(It.IsAny<PostComponentGroup>()))
-                .Returns(Task.FromResult(new ResponseData<ComponentGroup>
+                .Returns(Task.FromResult(new ResponseComponentGroup
                 {
-                    Data = new ComponentGroup
+                    Meta = new ResponseMeta
                     {
-                        Id = 2,
-                        Name = "Foo",
-                        Order = 1,
-                        Collapsed = Collapsable.No,
-                        CreatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
+                        Pagination = new ResponsePagination
+                        {
+                            Total = 1,
+                            Count = 1,
+                            PerPage = 20,
+                            CurrentPage = 1,
+                            TotalPages = 1,
+                            Links = new ResponsePaginationLinks
+                            {
+                                PreviousPage = null,
+                                NextPage = null
+                            }
+                        }
+                    },
+                    Data = new List<ComponentGroup>
+                    {
+                        new ComponentGroup
+                        {
+                            Id = 2,
+                            Name = "Foo",
+                            Order = 1,
+                            Collapsed = Collapsable.No,
+                            CreatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
+                        }
                     }
                 }));
 
             mock.Setup(x => x.UpdateComponentGroupAsync(It.IsAny<int>(), It.IsAny<PostComponentGroup>()))
-                .Returns(Task.FromResult(new ResponseData<ComponentGroup>
+                .Returns(Task.FromResult(new ResponseComponentGroup
                 {
-                    Data = new ComponentGroup
+                    Meta = new ResponseMeta
                     {
-                        Id = 2,
-                        Name = "Foo",
-                        Order = 1,
-                        Collapsed = Collapsable.No,
-                        CreatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
+                        Pagination = new ResponsePagination
+                        {
+                            Total = 1,
+                            Count = 1,
+                            PerPage = 20,
+                            CurrentPage = 1,
+                            TotalPages = 1,
+                            Links = new ResponsePaginationLinks
+                            {
+                                PreviousPage = null,
+                                NextPage = null
+                            }
+                        }
+                    },
+                    Data = new List<ComponentGroup>
+                    {
+                        new ComponentGroup
+                        {
+                            Id = 2,
+                            Name = "Foo",
+                            Order = 1,
+                            Collapsed = Collapsable.No,
+                            CreatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-11-07 16:35:13", timeParser, null),
+                        }
                     }
                 }));
 
@@ -381,9 +447,9 @@ namespace CachNet.Tests
             var client = new CachetClient("https://demo.cachethq.io");
 
             Assert.Equal(allGroups[0].Name, all.Data[0].Name);
-            Assert.Equal(firstGroup.Name, first.Data.Name);
-            Assert.Equal(newGroup.Name, add.Data.Name);
-            Assert.Equal(newGroup.Name, put.Data.Name);
+            Assert.Equal(firstGroup.Name, first.Data[0].Name);
+            Assert.Equal(newGroup.Name, add.Data[0].Name);
+            Assert.Equal(newGroup.Name, put.Data[0].Name);
         }
 
         [Fact]
@@ -426,7 +492,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.GetAllIncidentsAsync())
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<Incident>>
+                .Returns(Task.FromResult(new ResponseIncident
                 {
                     Meta = new ResponseMeta
                     {
@@ -464,7 +530,7 @@ namespace CachNet.Tests
                 }));
 
             mock.Setup(x => x.GetIncidentAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<Incident>
+                .Returns(Task.FromResult(new ResponseIncident
                 {
                     Meta = new ResponseMeta
                     {
@@ -482,24 +548,27 @@ namespace CachNet.Tests
                             }
                         }
                     },
-                    Data = new Incident
+                    Data = new List<Incident>
                     {
-                        Id = 1,
-                        ComponentId = 0,
-                        Name = "Incident Name",
-                        Status = IncidentStatus.Fixed,
-                        Visible = 1,
-                        Message = "Incident Message",
-                        ScheduledAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DeletedAt = null,
-                        HumanStatus = "Fixed"
+                        new Incident
+                        {
+                            Id = 1,
+                            ComponentId = 0,
+                            Name = "Incident Name",
+                            Status = IncidentStatus.Fixed,
+                            Visible = 1,
+                            Message = "Incident Message",
+                            ScheduledAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DeletedAt = null,
+                            HumanStatus = "Fixed"
+                        }
                     }
                 }));
 
             mock.Setup(x => x.AddIncidentAsync(It.IsAny<PostIncident>()))
-                .Returns(Task.FromResult(new ResponseData<Incident>
+                .Returns(Task.FromResult(new ResponseIncident
                 {
                     Meta = new ResponseMeta
                     {
@@ -517,38 +586,60 @@ namespace CachNet.Tests
                             }
                         }
                     },
-                    Data = new Incident
+                    Data = new List<Incident>
                     {
-                        Id = 1,
-                        ComponentId = 0,
-                        Name = "Incident Name",
-                        Status = IncidentStatus.Fixed,
-                        Visible = 1,
-                        Message = "Incident Message",
-                        ScheduledAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DeletedAt = null,
-                        HumanStatus = "Fixed"
+                        new Incident
+                        {
+                            Id = 1,
+                            ComponentId = 0,
+                            Name = "Incident Name",
+                            Status = IncidentStatus.Fixed,
+                            Visible = 1,
+                            Message = "Incident Message",
+                            ScheduledAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DeletedAt = null,
+                            HumanStatus = "Fixed"
+                        }
                     }
                 }));
 
             mock.Setup(x => x.UpdateIncidentAsync(It.IsAny<int>(), It.IsAny<PutIncident>()))
-                .Returns(Task.FromResult(new ResponseData<Incident>
+                .Returns(Task.FromResult(new ResponseIncident
                 {
-                    Data = new Incident
+                    Meta = new ResponseMeta
                     {
-                        Id = 1,
-                        ComponentId = 0,
-                        Name = "Incident Name",
-                        Status = IncidentStatus.Fixed,
-                        Visible = 1,
-                        Message = "Incident Message",
-                        ScheduledAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DeletedAt = null,
-                        HumanStatus = "Fixed"
+                        Pagination = new ResponsePagination
+                        {
+                            Total = 1,
+                            Count = 1,
+                            PerPage = 20,
+                            CurrentPage = 1,
+                            TotalPages = 1,
+                            Links = new ResponsePaginationLinks
+                            {
+                                PreviousPage = null,
+                                NextPage = null
+                            }
+                        }
+                    },
+                    Data = new List<Incident>
+                    {
+                        new Incident
+                        {
+                            Id = 1,
+                            ComponentId = 0,
+                            Name = "Incident Name",
+                            Status = IncidentStatus.Fixed,
+                            Visible = 1,
+                            Message = "Incident Message",
+                            ScheduledAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DeletedAt = null,
+                            HumanStatus = "Fixed"
+                        }
                     }
                 }));
 
@@ -580,9 +671,9 @@ namespace CachNet.Tests
             var client = new CachetClient("https://demo.cachethq.io");
 
             Assert.Equal(allIncidents[0].Name, all.Data[0].Name);
-            Assert.Equal(firstIncident.Name, first.Data.Name);
-            Assert.Equal(firstIncident.Name, add.Data.Name);
-            Assert.Equal(firstIncident.Name, put.Data.Name);
+            Assert.Equal(firstIncident.Name, first.Data[0].Name);
+            Assert.Equal(firstIncident.Name, add.Data[0].Name);
+            Assert.Equal(firstIncident.Name, put.Data[0].Name);
         }
 
         [Fact]
@@ -657,7 +748,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.GetAllUpdatesForIncidentAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<IncidentUpdate>>
+                .Returns(Task.FromResult(new ResponseIncidentUpdate
                 {
                     Meta = new ResponseMeta
                     {
@@ -729,53 +820,62 @@ namespace CachNet.Tests
                 }));
 
             mock.Setup(x => x.GetIncidentUpdateAsync(It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<IncidentUpdate>
+                .Returns(Task.FromResult(new ResponseIncidentUpdate
                 {
-                    Data = new IncidentUpdate
+                    Data = new List<IncidentUpdate>
                     {
-                        Id = 1,
-                        IncidentId = 1,
-                        Status = IncidentStatus.Fixed,
-                        Message = "The monkeys are back and rested!",
-                        UserId = 1,
-                        CreatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
-                        HumanStatus = "Fixed",
-                        Permalink = "http://cachet.app/incidents/1#update-1"
+                        new IncidentUpdate
+                        {
+                            Id = 1,
+                            IncidentId = 1,
+                            Status = IncidentStatus.Fixed,
+                            Message = "The monkeys are back and rested!",
+                            UserId = 1,
+                            CreatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
+                            HumanStatus = "Fixed",
+                            Permalink = "http://cachet.app/incidents/1#update-1"
+                        }
                     }
                 }));
 
             mock.Setup(x => x.AddIncidentUpdateAsync(It.IsAny<int>(), It.IsAny<PostIncidentUpdate>()))
-                .Returns(Task.FromResult(new ResponseData<IncidentUpdate>
+                .Returns(Task.FromResult(new ResponseIncidentUpdate
                 {
-                    Data = new IncidentUpdate
+                    Data = new List<IncidentUpdate>
                     {
-                        Id = 1,
-                        IncidentId = 1,
-                        Status = IncidentStatus.Fixed,
-                        Message = "The monkeys are back and rested!",
-                        UserId = 1,
-                        CreatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
-                        HumanStatus = "Fixed",
-                        Permalink = "http://cachet.app/incidents/1#update-1"
+                        new IncidentUpdate
+                        {
+                            Id = 1,
+                            IncidentId = 1,
+                            Status = IncidentStatus.Fixed,
+                            Message = "The monkeys are back and rested!",
+                            UserId = 1,
+                            CreatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
+                            HumanStatus = "Fixed",
+                            Permalink = "http://cachet.app/incidents/1#update-1"
+                        }
                     }
                 }));
 
             mock.Setup(x => x.UpdateIncidentUpdateAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IncidentStatus>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(new ResponseData<IncidentUpdate>
+                .Returns(Task.FromResult(new ResponseIncidentUpdate
                 {
-                    Data = new IncidentUpdate
+                    Data = new List<IncidentUpdate>
                     {
-                        Id = 1,
-                        IncidentId = 1,
-                        Status = IncidentStatus.Fixed,
-                        Message = "The monkeys are back and rested!",
-                        UserId = 1,
-                        CreatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
-                        HumanStatus = "Fixed",
-                        Permalink = "http://cachet.app/incidents/1#update-1"
+                        new IncidentUpdate
+                        {
+                            Id = 1,
+                            IncidentId = 1,
+                            Status = IncidentStatus.Fixed,
+                            Message = "The monkeys are back and rested!",
+                            UserId = 1,
+                            CreatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2016-12-05 19:37:20", timeParser, null),
+                            HumanStatus = "Fixed",
+                            Permalink = "http://cachet.app/incidents/1#update-1"
+                        }
                     }
                 }));
 
@@ -791,9 +891,9 @@ namespace CachNet.Tests
             var client = new CachetClient("https://demo.cachethq.io");
 
             Assert.Equal(allUpdates[0].Message, all.Data[0].Message);
-            Assert.Equal(firstUpdate.Message, first.Data.Message);
-            Assert.Equal(firstUpdate.Message, add.Data.Message);
-            Assert.Equal(firstUpdate.Message, put.Data.Message);
+            Assert.Equal(firstUpdate.Message, first.Data[0].Message);
+            Assert.Equal(firstUpdate.Message, add.Data[0].Message);
+            Assert.Equal(firstUpdate.Message, put.Data[0].Message);
         }
 
         [Fact]
@@ -845,7 +945,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.GetAllMetricsAsync())
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<Metric>>
+                .Returns(Task.FromResult(new ResponseMetric
                 {
                     Meta = new ResponseMeta
                     {
@@ -882,7 +982,7 @@ namespace CachNet.Tests
                 }));
 
             mock.Setup(x => x.GetMetricAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<Metric>
+                .Returns(Task.FromResult(new ResponseMetric
                 {
                     Meta = new ResponseMeta
                     {
@@ -900,23 +1000,26 @@ namespace CachNet.Tests
                             }
                         }
                     },
-                    Data = new Metric
+                    Data = new List<Metric>
                     {
-                        Id = 1,
-                        DefaultValue = 0,
-                        Description = "Cups of coffee consumed.",
-                        Suffx = "Cups",
-                        Name = "Coffee",
-                        DisplayChart = 1,
-                        CalcType = 1,
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DefaultViewName = "Last 12 Hours"
+                        new Metric
+                        {
+                            Id = 1,
+                            DefaultValue = 0,
+                            Description = "Cups of coffee consumed.",
+                            Suffx = "Cups",
+                            Name = "Coffee",
+                            DisplayChart = 1,
+                            CalcType = 1,
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DefaultViewName = "Last 12 Hours"
+                        }
                     }
                 }));
 
             mock.Setup(x => x.AddMetricAsync(It.IsAny<PostMetric>()))
-                .Returns(Task.FromResult(new ResponseData<Metric>
+                .Returns(Task.FromResult(new ResponseMetric
                 {
                     Meta = new ResponseMeta
                     {
@@ -934,23 +1037,26 @@ namespace CachNet.Tests
                             }
                         }
                     },
-                    Data = new Metric
+                    Data = new List<Metric>
                     {
-                        Id = 1,
-                        DefaultValue = 0,
-                        Description = "Cups of coffee consumed.",
-                        Suffx = "Cups",
-                        Name = "Coffee",
-                        DisplayChart = 1,
-                        CalcType = 1,
-                        CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
-                        DefaultViewName = "Last 12 Hours"
+                        new Metric
+                        {
+                            Id = 1,
+                            DefaultValue = 0,
+                            Description = "Cups of coffee consumed.",
+                            Suffx = "Cups",
+                            Name = "Coffee",
+                            DisplayChart = 1,
+                            CalcType = 1,
+                            CreatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-08-01 12:00:00", timeParser, null),
+                            DefaultViewName = "Last 12 Hours"
+                        }
                     }
                 }));
 
             mock.Setup(x => x.GetMetricPointsAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<MetricPoint>>
+                .Returns(Task.FromResult(new ResponseMetricPoint
                 {
                     Meta = new ResponseMeta
                     {
@@ -998,7 +1104,7 @@ namespace CachNet.Tests
                 }));
 
             mock.Setup(x => x.AddMetricPointAsync(It.IsAny<int>(), It.IsAny<PostMetricPoint>()))
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<MetricPoint>>
+                .Returns(Task.FromResult(new ResponseMetricPoint
                 {
                     Meta = new ResponseMeta
                     {
@@ -1065,8 +1171,8 @@ namespace CachNet.Tests
             var client = new CachetClient("https://demo.cachethq.io");
 
             Assert.Equal(metric.Name, all.Data[0].Name);
-            Assert.Equal(metric.Name, add.Data.Name);
-            Assert.Equal(metric.Name, first.Data.Name);
+            Assert.Equal(metric.Name, add.Data[0].Name);
+            Assert.Equal(metric.Name, first.Data[0].Name);
             Assert.Equal(points[0].Value, firstpoints.Data[0].Value);
             Assert.Equal(points[0].Value, update.Data[0].Value);
         }
@@ -1092,7 +1198,7 @@ namespace CachNet.Tests
             var mock = new Mock<ICachetClient>(MockBehavior.Strict);
 
             mock.Setup(x => x.GetAllSubscribersAsync())
-                .Returns(Task.FromResult(new ResponseData<IReadOnlyList<Subscriber>>
+                .Returns(Task.FromResult(new ResponseSubscriber
                 {
                     Meta = new ResponseMeta
                     {
@@ -1125,7 +1231,7 @@ namespace CachNet.Tests
                 }));
 
             mock.Setup(x => x.AddSubscriberAsync(It.IsAny<PostSubscriber>()))
-                .Returns(Task.FromResult(new ResponseData<Subscriber>
+                .Returns(Task.FromResult(new ResponseSubscriber
                 {
                     Meta = new ResponseMeta
                     {
@@ -1143,14 +1249,17 @@ namespace CachNet.Tests
                             }
                         }
                     },
-                    Data = new Subscriber
+                    Data = new List<Subscriber>
                     {
-                        Id = 1,
-                        Email = "support@alt-three.com",
-                        VerifyCode = "1234567890",
-                        VerifiedAt = DateTime.ParseExact("2015-07-24 14:42:24", timeParser, null),
-                        CreatedAt = DateTime.ParseExact("2015-07-24 14:42:24", timeParser, null),
-                        UpdatedAt = DateTime.ParseExact("2015-07-24 14:42:24", timeParser, null)
+                        new Subscriber
+                        {
+                            Id = 1,
+                            Email = "support@alt-three.com",
+                            VerifyCode = "1234567890",
+                            VerifiedAt = DateTime.ParseExact("2015-07-24 14:42:24", timeParser, null),
+                            CreatedAt = DateTime.ParseExact("2015-07-24 14:42:24", timeParser, null),
+                            UpdatedAt = DateTime.ParseExact("2015-07-24 14:42:24", timeParser, null)
+                        }
                     }
                 }));
 
@@ -1164,7 +1273,7 @@ namespace CachNet.Tests
             var client = new CachetClient("https://demo.cachethq.io");
 
             Assert.Equal(allComponents[0].Email, all.Data[0].Email);
-            Assert.Equal(firstComponent.Email, first.Data.Email);
+            Assert.Equal(firstComponent.Email, first.Data[0].Email);
         }
     }
 }

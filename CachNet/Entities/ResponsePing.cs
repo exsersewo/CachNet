@@ -2,7 +2,7 @@
 
 namespace CachNet.Entities
 {
-    public class ResponseData<T>
+    public class ResponseSingle<T>
     {
         [JsonProperty("meta")]
         public ResponseMeta Meta;
