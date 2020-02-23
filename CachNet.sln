@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachNet", "CachNet\CachNet.csproj", "{EA092E59-B160-4574-A7E1-95840C192067}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachNet.Tests", "CachNet.Tests\CachNet.Tests.csproj", "{BCC015BE-3FF3-4A54-992A-002DC5627970}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA092E59-B160-4574-A7E1-95840C192067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA092E59-B160-4574-A7E1-95840C192067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA092E59-B160-4574-A7E1-95840C192067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA092E59-B160-4574-A7E1-95840C192067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC015BE-3FF3-4A54-992A-002DC5627970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC015BE-3FF3-4A54-992A-002DC5627970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC015BE-3FF3-4A54-992A-002DC5627970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC015BE-3FF3-4A54-992A-002DC5627970}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C75B50D-78EF-4503-9C2C-77477EC0E3AB}
+	EndGlobalSection
+EndGlobal
