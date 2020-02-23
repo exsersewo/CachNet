@@ -4,11 +4,11 @@ namespace CachNet.Entities
 {
     public class PostComponent
     {
-        [JsonProperty("name")]
+        [JsonProperty("name"), JsonRequired]
         public string Name;
         [JsonProperty("description")]
         public string Description;
-        [JsonProperty("status")]
+        [JsonProperty("status"), JsonRequired]
         public ComponentStatus Status = 0;
         [JsonProperty("link")]
         public string Link;

@@ -6,13 +6,13 @@ namespace CachNet.Entities
 {
     public class PostIncident
     {
-        [JsonProperty("name")]
+        [JsonProperty("name"), JsonRequired]
         public string Name;
-        [JsonProperty("message")]
+        [JsonProperty("message"), JsonRequired]
         public string Message;
-        [JsonProperty("status")]
+        [JsonProperty("status"), JsonRequired]
         public IncidentStatus Status;
-        [JsonProperty("visible")]
+        [JsonProperty("visible"), JsonRequired]
         public int Visible;
         [JsonProperty("component_id")]
         public int ComponentId;

@@ -4,9 +4,9 @@ namespace CachNet.Entities
 {
     public class PostIncidentUpdate
     {
-        [JsonProperty("status")]
+        [JsonProperty("status"), JsonRequired]
         public IncidentStatus Status;
-        [JsonProperty("message")]
+        [JsonProperty("message"), JsonRequired]
         public string Message;
     }
 }

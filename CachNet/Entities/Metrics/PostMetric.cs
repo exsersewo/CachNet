@@ -4,15 +4,15 @@ namespace CachNet.Entities
 {
     public class PostMetric
     {
-        [JsonProperty("name")]
+        [JsonProperty("name"), JsonRequired]
         public string Name;
-        [JsonProperty("suffix")]
+        [JsonProperty("suffix"), JsonRequired]
         public string Suffx;
-        [JsonProperty("description")]
+        [JsonProperty("description"), JsonRequired]
         public string Description;
-        [JsonProperty("default_value")]
+        [JsonProperty("default_value"), JsonRequired]
         public double DefaultValue;
-        [JsonProperty("display_chart")]
+        [JsonProperty("display_chart"), JsonRequired]
         public int DisplayChart;
     }
 }

@@ -5,7 +5,7 @@ namespace CachNet.Net
 {
     public class PostSubscriber
     {
-        [JsonProperty("email")]
+        [JsonProperty("email"), JsonRequired]
         public string EMail;
         [JsonProperty("verify")]
         public bool Verify;
